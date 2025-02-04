@@ -1,12 +1,12 @@
 @extends('layouts.admin')
-@section('title', 'Dashboard | Rooms')
+@section('title', 'Dashboard | Bookings')
 @section('content')
     <div class="pagetitle">
-        <h1>Rooms</h1>
+        <h1>Bookings</h1>
         <nav>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
-                <li class="breadcrumb-item active">Rooms</li>
+                <li class="breadcrumb-item active">Bookings</li>
             </ol>
         </nav>
     </div><!-- End Page Title -->
@@ -16,7 +16,7 @@
             <div class="col-lg-12">
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">All Rooms</h5>
+                        <h5 class="card-title">All Bookings</h5>
 
                         <a href="{{ route('room.create') }}"><button type="button" class="btn btn-outline-primary btn-sm">Add</button></a>
 
@@ -25,33 +25,19 @@
                             <thead>
                                 <tr>
                                     <th scope="col">#</th>
-                                    <th scope="col">Hotel</th>
                                     <th scope="col">Room Number</th>
-                                    <th scope="col">Type</th>
-                                    <th scope="col">Price</th>
-                                    <th scope="col">Capacity</th>
+                                    <th scope="col">Check in date</th>
+                                    <th scope="col">Check out date</th>
                                     <th scope="col">Status</th>
+                                    <th scope="col">Total Price</th>
                                     <th scope="col">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($rooms as $room)
+                                @foreach ($bookings as $booking)
                                 <tr>
                                     <th scope="row">{{ $loop->iteration }}</th>
-                                    <td>{{ $room->hotel->name }}</td>
-                                    <td>{{ $room->room_number }}</td>
-                                    <td>{{ $room->type }}</td>
-                                    <td>{{ $room->price }}</td>
-                                    <td>{{ $room->capacity }}</td>
-                                    <td>{{ $room->is_available }}</td>
-                                    <td>
-                                        <a class="btn btn-outline-primary" href="{{ route('room.edit', $room->id) }}">Edit</a>
-                                        <form class="d-inline" action="{{ route('room.destroy', $room->id) }}" method="POST">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button class="btn btn-outline-danger" type="submit">Delete</button>
-                                        </form>
-                                    </td>
+
                                 </tr>
                                 @endforeach
                             </tbody>

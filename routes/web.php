@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\BookingController;
 use App\Http\Controllers\HotelController;
 use App\Http\Controllers\RoomController;
 use Illuminate\Support\Facades\Route;
@@ -22,4 +23,5 @@ Route::middleware('auth', 'admin')->group(function(){
 
     Route::resource('hotel', HotelController:: class);
     Route::resource('room', RoomController:: class);
+    Route::resource('booking', BookingController:: class);
 });

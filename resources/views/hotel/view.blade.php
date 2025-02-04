@@ -41,17 +41,17 @@
                                     <td>{{ $hotel->description }}</td>
                                     <td>{{ $hotel->location }}</td>
                                     <td>
-                                        <img style="max-width: 80px; height: auto;" src="{{ asset('storage/' . $hotel->image) }}" alt="Uploaded Image">
+                                        <img style="max-width: 80px; height: auto;" src="{{ asset($hotel->image) }}" alt="Uploaded Image">
                                     </td>
                                     <td>{{ $hotel->rating }}</td>
                                     <td>
-                                        <div class="btn-group" role="group" aria-label="Basic outlined example">
-                                            <button type="button" class="btn btn-outline-primary">View</button>
-                                            <a class="btn btn-outline-primary" href="{{ route('edit', $hotel->id) }}">Edit</a>
-                                            @if($hotel->is_deletable == 1)
-                                                <button type="button" class="btn btn-outline-primary">Delete</button>
-                                            @endif
-                                          </div>
+                                        <a class="btn btn-outline-success" href="">View</a>
+                                        <a class="btn btn-outline-primary" href="{{ route('hotel.edit', $hotel->id) }}">Edit</a>
+                                        <form class="d-inline" action="{{ route('hotel.destroy', $hotel->id) }}" method="POST">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button class="btn btn-outline-danger" type="submit">Delete</button>
+                                        </form>
                                     </td>
                                 </tr>
                                 @endforeach

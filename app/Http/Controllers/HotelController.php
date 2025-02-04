@@ -6,7 +6,6 @@ use App\Http\Requests\HotelRequest;
 use App\Models\HotelModel;
 use App\Services\HotelServices;
 use Exception;
-use Illuminate\Http\Request;
 
 class HotelController extends Controller
 {
@@ -20,8 +19,8 @@ class HotelController extends Controller
 
     public function index()
     {
-        $hotels = HotelModel::paginate(1000);
-        return view('hotel.hotels', compact('hotels'));
+        $hotels = HotelModel::paginate(10);
+        return view('hotel.view', compact('hotels'));
     }
 
     /**
@@ -58,22 +57,37 @@ class HotelController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $hotel = HotelModel::find($id);
+        return view('hotel.edit', compact('hotel'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+
+
+    public function update(HotelRequest $request, HotelModel $hotel)
     {
-        //
+        try {
+            $this->service->update($request->validated(), $hotel);
+            return redirect()->route('hotel.index')->with('message', 'Modified');
+        } catch (Exception $e) {
+            return redirect()->back()->with('error', 'Something was wrong.');
+        }
     }
+    
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(HotelModel $hotel)
     {
-        //
+        try{
+            $this->service->delete($hotel);
+            return redirect()->route('hotel.index')->with('success', 'Deleted');
+        }catch(Exception $e){
+            return redirect()->route('hotel.index')->with('error', $e->getMessage());
+        }
+
     }
 }

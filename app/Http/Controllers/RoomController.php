@@ -2,63 +2,89 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\RoomRequest;
+use App\Models\HotelModel;
+use App\Models\RoomModel;
+use App\Services\RoomServices;
+use Exception;
 use Illuminate\Http\Request;
+use PhpParser\Node\Stmt\Return_;
 
 class RoomController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+
+
+    protected RoomServices $service;
+
+    function __construct(RoomServices $service)
+    {
+        $this->service = $service;
+    }
+
     public function index()
     {
-        return view('room.view');
+        $rooms = RoomModel::all();
+        return view('room.view', compact('rooms'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        return view('room.add');
+        $hotels = HotelModel::all();
+        $rooms = RoomModel::all();
+
+        if(count($hotels)<= 0){
+            return redirect()->route('hotel.index')->with('error', 'No hotel in the list, please add Hotel first');
+        }
+
+        return view('room.add', compact('hotels', 'rooms'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function store(RoomRequest $request)
     {
-        //
+        try{
+            $this->service->add($request->validated());
+            return redirect()->route('room.index')->with('message', 'Added');
+        }catch(Exception $e){
+            return redirect()->back()->with('error', $e->getMessage());
+        }
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(string $id)
     {
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
+
     public function edit(string $id)
     {
-        //
+        $room = RoomModel::find($id);
+        $hotels = HotelModel::all();
+        return view('room.edit', compact('hotels', 'room'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+
+
+
+    public function update(RoomRequest $request, RoomModel $room)
     {
-        //
+        try {
+            $this->service->update($request->validated(), $room);
+            return redirect()->route('room.index')->with('success', 'Modified');
+        } catch (Exception $e) {
+            dd($e);
+            return redirect()->back()->with('error', 'Something was wrong.');
+        }
+
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+    public function destroy(RoomModel $room)
     {
-        //
+        try{
+           $this->service->delete($room);
+           return redirect()->route('room.index')->with('message', 'Delete');
+        }catch(Exception $e){
+            return redirect()->route('room.index')->with('error', $e->getMessage());
+        }
+
     }
 }
