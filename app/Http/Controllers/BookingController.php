@@ -3,16 +3,27 @@
 namespace App\Http\Controllers;
 
 use App\Models\BookingModel;
+use App\Services\BookingServices;
+use Exception;
 use Illuminate\Http\Request;
 
 class BookingController extends Controller
 {
+
+    protected BookingServices $service;
+
+    function __construct(BookingServices $service)
+    {
+        $this->service =  $service;
+    }
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $bookings = BookingModel::paginate(10);
+        $bookings = BookingModel::with('room', 'user')->get();
+        // dd($bookings);
         return view('booking.view', compact('bookings'));
     }
 
@@ -21,7 +32,7 @@ class BookingController extends Controller
      */
     public function create()
     {
-        //
+
     }
 
     /**
@@ -29,7 +40,20 @@ class BookingController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
+    }
+
+
+    public function bookingsBeforeConfirm(Request $request)
+    {
+        try{
+            $this->service->add($request);
+            return redirect()->route('home')->with('message', 'booking added');
+        }catch(Exception $e){
+            dd($e->getMessage());
+            return redirect()->back()->with('error', $e->getMessage());
+        }
+
     }
 
     /**

@@ -1,3 +1,7 @@
+<?php
+use Carbon\Carbon;
+?>
+
 @extends('layouts.admin')
 @section('title', 'Dashboard | Bookings')
 @section('content')
@@ -18,26 +22,55 @@
                     <div class="card-body">
                         <h5 class="card-title">All Bookings</h5>
 
-                        <a href="{{ route('room.create') }}"><button type="button" class="btn btn-outline-primary btn-sm">Add</button></a>
-
                         <!-- Table with stripped rows -->
                         <table class="table table-striped">
                             <thead>
                                 <tr>
                                     <th scope="col">#</th>
+                                    <th scope="col">User name</th>
+                                    <th scope="col">Hotel</th>
                                     <th scope="col">Room Number</th>
                                     <th scope="col">Check in date</th>
                                     <th scope="col">Check out date</th>
                                     <th scope="col">Status</th>
-                                    <th scope="col">Total Price</th>
+                                    <th scope="col">Per Day Cost</th>
+                                    <th scope="col">Total day</th>
+                                    <th scope="col">Total Cost</th>
                                     <th scope="col">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach ($bookings as $booking)
+
+                                <?php
+
+                                $checkInDate = Carbon::parse($booking->check_in_date); // Replace with your check-in date
+                                $checkOutDate = Carbon::parse($booking->check_out_date); // Replace with your check-out date
+
+                                $daysDifference = $checkInDate->diffInDays($checkOutDate);
+
+
+                                ?>
+
                                 <tr>
                                     <th scope="row">{{ $loop->iteration }}</th>
-
+                                    <td>{{ $booking->user->name }}</td>
+                                    <td>{{ $booking->room->hotel->name }}</td>
+                                    <td>{{ $booking->room->room_number  }}</td>
+                                    <td>{{ $booking->check_in_date }}</td>
+                                    <td>{{ $booking->check_out_date }}</td>
+                                    <td>{{ $booking->status }}</td>
+                                    <td>{{ $booking->total_price }}</td>
+                                    <td>{{ $daysDifference }}</td>
+                                    <td>{{ $booking->total_price*$daysDifference }}</td>
+                                    <td>
+                                        <a class="btn btn-outline-primary" href="">Edit</a>
+                                        <form class="d-inline" action="" method="POST">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button class="btn btn-outline-danger" type="submit">Delete</button>
+                                        </form>
+                                    </td>
                                 </tr>
                                 @endforeach
                             </tbody>

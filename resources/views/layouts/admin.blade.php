@@ -317,7 +317,7 @@
 
             <li class="nav-item">
                 <a class="nav-link {{ Request::segment(1) != 'users' ? 'collapsed' : '' }}"
-                    href="{{ route('bookings') }}">
+                    href="{{ route('bookings.index') }}">
                     <i class="ri-user-3-line"></i>
                     <span>Bookings</span>
                 </a>

@@ -4,11 +4,17 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\HotelController;
 use App\Http\Controllers\RoomController;
+use App\Http\Controllers\WebsiteController;
 use Illuminate\Support\Facades\Route;
 
 
+Route::get('/', [WebsiteController::class, 'home'])->name('home');
+Route::post('/search', [WebsiteController::class, 'getInfo'])->name('search');
+Route::get('/user-registration', [WebsiteController::class, 'user_registration'])->name('user_registration');
+Route::post('/front-registration', [WebsiteController::class, 'registration'])->name('frontend.registration');
+
 Route::middleware('guest')->group(function(){
-    Route::get('/', [AdminController::class, 'login'])->name('login');
+    Route::get('/login', [AdminController::class, 'login'])->name('login');
     Route::post('/admin-login', [AdminController::class, 'admin_login_post'])->name('admin_login_post');
 });
 
@@ -23,5 +29,15 @@ Route::middleware('auth', 'admin')->group(function(){
 
     Route::resource('hotel', HotelController:: class);
     Route::resource('room', RoomController:: class);
-    Route::resource('booking', BookingController:: class);
+    Route::resource('bookings', BookingController:: class);
+
+    //bookings_before_confirm
+    Route::post('bookings_before_confirm',[BookingController::class, 'bookingsBeforeConfirm'])->name('bookings_before_confirm');
+});
+
+
+Route::middleware(['role:admin'])->group(function () {
+    Route::get('/admin-dashboard', function () {
+        return 'Admin Page';
+    });
 });

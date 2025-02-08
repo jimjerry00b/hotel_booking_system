@@ -11,7 +11,7 @@ class BookingRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,9 @@ class BookingRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'hotel_id' => 'required',
+            'room_number' => 'required',
+            'type' => 'required',
         ];
     }
 }
