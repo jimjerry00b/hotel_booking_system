@@ -24,6 +24,7 @@ class AdminController extends Controller
     }
 
     public function admin_login_post(AdminRequest $request){
+        
         $result = $this->service->login($request);
 
         if($result){

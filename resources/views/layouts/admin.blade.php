@@ -293,6 +293,34 @@
             </li>
 
             <li class="nav-item">
+                <a class="nav-link collapsed" href="{{ route('manage-role') }}">
+                    <i class="ri-user-3-line"></i>
+                    <span>Mangage Role</span>
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="{{ route('permission.index') }}">
+                    <i class="ri-user-3-line"></i>
+                    <span>Mangage Permission</span>
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="{{ route('assignPermissionRole') }}">
+                    <i class="ri-user-3-line"></i>
+                    <span>Assign Permission to Role</span>
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="{{ route('assignPermissionRoute') }}">
+                    <i class="ri-user-3-line"></i>
+                    <span>Assign Permission to Route</span>
+                </a>
+            </li>
+
+            <li class="nav-item">
                 <a class="nav-link {{ Request::segment(1) == 'hotel' || Request::segment(1) == 'room' ? '' : 'collapsed' }}"
                     data-bs-target="#hotel_room" data-bs-toggle="collapse" href="#">
                     <i class="ri-home-3-line"></i><span>Hotel & Room</span><i class="bi bi-chevron-down ms-auto"></i>

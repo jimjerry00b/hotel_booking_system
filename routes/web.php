@@ -3,6 +3,8 @@
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\HotelController;
+use App\Http\Controllers\PermissionController;
+use App\Http\Controllers\RoleController;
 use App\Http\Controllers\RoomController;
 use App\Http\Controllers\WebsiteController;
 use Illuminate\Support\Facades\Route;
@@ -33,11 +35,28 @@ Route::middleware('auth', 'admin')->group(function(){
 
     //bookings_before_confirm
     Route::post('bookings_before_confirm',[BookingController::class, 'bookingsBeforeConfirm'])->name('bookings_before_confirm');
-});
+
+    Route::get('manage-role',[RoleController::class, 'manageRole'])->name('manage-role');
+    Route::get('create-role',[RoleController::class, 'createRole'])->name('create-role');
+    route::post('store-role',[RoleController::class, 'storeRole'])->name('store-role');
+    route::get('edit-role/{id}',[RoleController::class, 'editRole'])->name('edit-role');
+    route::put('update-role/{id}',[RoleController::class, 'updateRole'])->name('update-role');
+    route::delete('delete-role/{id}',[RoleController::class, 'deleteRole'])->name('delete-role');
+
+    Route::resource('permission', PermissionController:: class);
+
+    // assign permission to role routes
+    Route::get('assign-permission-role', [PermissionController::class, 'assignPermissionRole'])->name('assignPermissionRole');
+    Route::get('assign-new-permission-role', [PermissionController::class, 'assignNewPermissionRole'])->name('assignNewPermissionRole');
+    Route::post('assign-new-permission-role', [PermissionController::class, 'assignNewPermissionRolePost'])->name('assignNewPermissionRolePost');
+    Route::get('edit-permission-role/{id}', [PermissionController::class, 'editPermissionRole'])->name('editPermissionRole');
+    Route::post('edit-assign-permission-role-post', [PermissionController::class, 'editAssignPermissionRolePost'])->name('editAssignPermissionRolePost');
+    Route::delete('delete-permission-role/{id}',[PermissionController::class, 'deletePermissionToRole'])->name('deletePermissionToRole');
 
 
-Route::middleware(['role:admin'])->group(function () {
-    Route::get('/admin-dashboard', function () {
-        return 'Admin Page';
-    });
+    //assign permission to route
+
+    Route::get('assign-permission-route',[PermissionController::class, 'assignPermissionRoute'])->name('assignPermissionRoute');
+    Route::get('assign-new-permission-route',[PermissionController::class, 'assignNewPermissionRoute'])->name('assignNewPermissionRoute');
+    Route::post('assign-new-permission-route-post', [PermissionController::class, 'assignNewPermissionRoutePost'])->name('assignNewPermissionRoutePost');
 });

@@ -15,7 +15,6 @@ class AdminServices
         if (Auth::attempt($credentials)){
             return true;
         }
-
         return false;
     }
 
