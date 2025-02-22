@@ -27,24 +27,29 @@
                             <tr>
                                 <th scope="col">#</th>
                                 <th scope="col">Permission</th>
-                                <th scope="col">Roles</th>
+                                <th scope="col">Router Name</th>
                                 <th scope="col">Action</th>
                             </tr>
                         </thead>
 
                         <tbody>
+
+                            @foreach ($routerPermissions as $routerPermission)
                             <tr>
-                                <td>d</td>
-                                <td>a</td>
+                                <th>{{ $loop->iteration }}</th>
+                                <td>{{ $routerPermission->permission->name }}</td>
+                                <td>{{ $routerPermission->router }}</td>
                                 <td>
-                                    <a class="btn btn-outline-primary" href="">Edit</a>
-                                    <form class="d-inline" action="" method="POST">
+                                    <a class="btn btn-outline-primary" href="{{ route('edit.permission.route', $routerPermission->id) }}">Edit</a>
+                                    <form class="d-inline" action="{{ route('deletePermissionRouter', $routerPermission->id) }}" method="POST">
                                         @csrf
                                         @method('DELETE')
                                         <button class="btn btn-outline-danger" type="submit">Delete</button>
                                     </form>
                                 </td>
                             </tr>
+                            @endforeach
+
                         </tbody>
                     </table>
                     <!-- End Table with stripped rows -->

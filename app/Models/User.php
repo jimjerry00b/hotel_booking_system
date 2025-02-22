@@ -51,13 +51,29 @@ class User extends Authenticatable
     }
 
 
-    // public function role()
+    public function role()
+    {
+        return $this->hasOne(Role::class, 'id', 'role_id');
+    }
+
+    // public function hasPermission($permission)
     // {
-    //     return $this->belongsTo(RoleModel::class);
+    //     return $this->role->permissions->contains('name', $permission);
     // }
 
-    public function hasPermission($permission)
-    {
-        return $this->role->permissions->contains('name', $permission);
+    public function hasPermissionToRoute($route){
+
+        if($this->role_id == 1){
+            return true;
+        }
+
+        $permissions = $this->role->permissions;
+        foreach($permissions as $permission){
+            if($permission->routes->contains('router' , $route)){
+                return true;
+            }
+        }
+
+        return false;
     }
 }

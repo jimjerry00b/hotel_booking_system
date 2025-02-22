@@ -59,4 +59,7 @@ Route::middleware('auth', 'admin')->group(function(){
     Route::get('assign-permission-route',[PermissionController::class, 'assignPermissionRoute'])->name('assignPermissionRoute');
     Route::get('assign-new-permission-route',[PermissionController::class, 'assignNewPermissionRoute'])->name('assignNewPermissionRoute');
     Route::post('assign-new-permission-route-post', [PermissionController::class, 'assignNewPermissionRoutePost'])->name('assignNewPermissionRoutePost');
+    Route::get('edit-permission-route/{id}', [PermissionController::class, 'editPermissionRoute'])->name('edit.permission.route');
+    Route::post('editAssignPermissionRoutePost', [PermissionController::class, 'editAssignPermissionRoutePost'])->name('editAssignPermissionRoutePost');
+    Route::delete('deletePermissionRouter/{id}', [PermissionController::class, 'deletePermissionRouter'])->name('deletePermissionRouter');
 });

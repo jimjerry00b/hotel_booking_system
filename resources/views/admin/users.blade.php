@@ -38,7 +38,7 @@
                                     <th scope="row">{{ $loop->iteration }}</th>
                                     <td>{{ $user->name }}</td>
                                     <td>{{ ($user->is_active == 1)? "Active" : "Deactived" }}</td>
-                                    <td>{{ $user->role_id }}</td>
+                                    <td>{{ $user->role->name }}</td>
                                     <td>{{ $user->created_at }}</td>
                                     <td>
                                         <div class="btn-group" role="group" aria-label="Basic outlined example">

@@ -220,7 +220,7 @@
                     <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
                         <li class="dropdown-header">
                             <h6>{{ Auth::user()->name }}</h6>
-                            <span>{{ Auth::user()->role_id }}</span>
+                            <span>{{ Auth::user()->role->name }}</span>
                         </li>
                         <li>
                             <hr class="dropdown-divider">
@@ -284,6 +284,7 @@
                 </a>
             </li>
 
+            @if(auth()->user()->hasPermissionToRoute('users'))
             <li class="nav-item">
                 <a class="nav-link {{ Request::segment(1) != 'users' ? 'collapsed' : '' }}"
                     href="{{ route('users') }}">
@@ -291,35 +292,45 @@
                     <span>Users</span>
                 </a>
             </li>
+            @endif
 
+            @if(auth()->user()->hasPermissionToRoute('manage-role'))
             <li class="nav-item">
                 <a class="nav-link collapsed" href="{{ route('manage-role') }}">
                     <i class="ri-user-3-line"></i>
                     <span>Mangage Role</span>
                 </a>
             </li>
+            @endif
 
+            @if(auth()->user()->hasPermissionToRoute('permission.index'))
             <li class="nav-item">
                 <a class="nav-link collapsed" href="{{ route('permission.index') }}">
                     <i class="ri-user-3-line"></i>
                     <span>Mangage Permission</span>
                 </a>
             </li>
+            @endif
 
+            @if(auth()->user()->hasPermissionToRoute('assignPermissionRole'))
             <li class="nav-item">
                 <a class="nav-link collapsed" href="{{ route('assignPermissionRole') }}">
                     <i class="ri-user-3-line"></i>
                     <span>Assign Permission to Role</span>
                 </a>
             </li>
+            @endif
 
+            @if(auth()->user()->hasPermissionToRoute('assignPermissionRoute'))
             <li class="nav-item">
                 <a class="nav-link collapsed" href="{{ route('assignPermissionRoute') }}">
                     <i class="ri-user-3-line"></i>
                     <span>Assign Permission to Route</span>
                 </a>
             </li>
+            @endif
 
+            @if(auth()->user()->hasPermissionToRoute('hotel'))
             <li class="nav-item">
                 <a class="nav-link {{ Request::segment(1) == 'hotel' || Request::segment(1) == 'room' ? '' : 'collapsed' }}"
                     data-bs-target="#hotel_room" data-bs-toggle="collapse" href="#">
@@ -342,14 +353,8 @@
                     </li>
                 </ul>
             </li>
+            @endif
 
-            <li class="nav-item">
-                <a class="nav-link {{ Request::segment(1) != 'users' ? 'collapsed' : '' }}"
-                    href="{{ route('bookings.index') }}">
-                    <i class="ri-user-3-line"></i>
-                    <span>Bookings</span>
-                </a>
-            </li>
         </ul>
 
     </aside><!-- End Sidebar-->

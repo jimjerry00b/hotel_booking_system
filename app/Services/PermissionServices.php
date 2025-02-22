@@ -81,4 +81,31 @@ class PermissionServices
             'router' => $request['route'],
         ]);
     }
+
+    function editPermissionToRoute($permission_id, $route, $id){
+        try{
+            $permission_route = PermissionRouteModel::find($id);
+
+            $permission_route->update([
+                'permission_id' => $permission_id,
+                'router' => $route,
+            ]);
+
+
+
+        }catch(Exception $e){
+            throw new Exception($e->getMessage(),500);
+        }
+    }
+
+
+    function permissionToRouteDelete($id){
+
+        try {
+            PermissionRouteModel::where('id', $id)->delete();
+        }catch(Exception $e){
+            throw new Exception($e->getMessage(), 500);
+        }
+
+    }
 }

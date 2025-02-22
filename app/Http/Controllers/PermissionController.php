@@ -160,15 +160,13 @@ class PermissionController extends Controller
 
     public function assignPermissionRoute(){
 
-        return view('permission.assignPermissionRoute');
-
+        $routerPermissions = PermissionRouteModel::with('permission')->get();
+        return view('permission.assignPermissionRoute', compact('routerPermissions'));
     }
 
     public function assignNewPermissionRoute(){
         $routes = Route::getRoutes();
-
         $middlewaregroup = 'admin';
-
         $routeDetails = [];
 
         foreach($routes as $route){
@@ -187,6 +185,7 @@ class PermissionController extends Controller
         }
 
         $permissions = Permission::all();
+
         return view('permission.assignNewPermissionRoute', compact('permissions', 'routeDetails'));
     }
 
@@ -201,16 +200,69 @@ class PermissionController extends Controller
 
 
             if($isExist){
-                return redirect()->back()->with('error', 'This is already exist');
+                return redirect()->back()->with('error', 'Permission is already assigned');
             }
 
 
             $this->service->permissionToRouteAdd($request->validated());
+            return redirect()->route('assignPermissionRoute')->with('message', 'Added');
+        }catch(Exception $e){
+            return redirect()->back()->with('error', $e->getMessage());
+        }
+
+    }
+
+
+    public function editPermissionRoute($id){
+        try{
+            $permissionRouter = PermissionRouteModel::where('id',$id)->first();
+            $permissions = Permission::all();
+
+            $routes = Route::getRoutes();
+            $middlewaregroup = 'admin';
+            $routeDetails = [];
+
+            foreach($routes as $route){
+                $middlewares = $route->gatherMiddleware();
+
+                if(in_array($middlewaregroup, $middlewares)){
+
+                    if($route->getName() !== 'dashboard' && $route->getName() !== 'logout'){
+                        $routeDetails [] = [
+                            'name' => $route->getName(),
+                            'uri'  => $route->uri()
+                        ];
+                    }
+
+                }
+            }
+            return view('permission.editPermissionRouter', compact('permissions', 'permissionRouter', 'routeDetails', 'id'));
+        }catch(Exception $e){
+            return redirect()->back()->with('error', $e->getMessage());
+        }
+
+    }
+
+
+    public function editAssignPermissionRoutePost(PermissionToRouteRequest $request){
+
+        try{
+            $request->validated();
+            $this->service->editPermissionToRoute($request->permission, $request->route, $request->id);
             return redirect()->route('assignPermissionRoute')->with('message', 'Modified');
         }catch(Exception $e){
             return redirect()->back()->with('error', $e->getMessage());
         }
 
+    }
+
+    public function deletePermissionRouter($id){
+        try{
+            $this->service->permissionToRouteDelete($id);
+            return redirect()->route('assignPermissionRoute')->with('message', 'Deleted');
+        }catch(Exception $e){
+            return redirect()->back()->with('error', $e->getMessage());
+        }
     }
 
 }

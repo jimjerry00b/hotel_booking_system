@@ -22,5 +22,9 @@ class Roles extends Seeder
             'name' => 'Admin',
         ]);
 
+        Role::create([
+            'name' => 'User',
+        ]);
+
     }
 }
