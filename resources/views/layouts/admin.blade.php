@@ -46,7 +46,7 @@
 
         <div class="d-flex align-items-center justify-content-between">
             <a href="{{ route('dashboard') }}" class="logo d-flex align-items-center">
-                <img src="assets/img/logo.png" alt="">
+                <img src="{{ asset('assets/img/logo.png') }}" alt="">
                 <span class="d-none d-lg-block">{{ config('app.name') }}</span>
             </a>
             <i class="bi bi-list toggle-sidebar-btn"></i>
@@ -161,7 +161,7 @@
 
                         <li class="message-item">
                             <a href="#">
-                                <img src="assets/img/messages-1.jpg" alt="" class="rounded-circle">
+                                <img src="{{ asset('assets/img/messages-1.jpg') }}" alt="" class="rounded-circle">
                                 <div>
                                     <h4>Maria Hudson</h4>
                                     <p>Velit asperiores et ducimus soluta repudiandae labore officia est ut...</p>
@@ -175,7 +175,7 @@
 
                         <li class="message-item">
                             <a href="#">
-                                <img src="assets/img/messages-2.jpg" alt="" class="rounded-circle">
+                                <img src="{{ asset('assets/img/messages-2.jpg') }}" alt="" class="rounded-circle">
                                 <div>
                                     <h4>Anna Nelson</h4>
                                     <p>Velit asperiores et ducimus soluta repudiandae labore officia est ut...</p>
@@ -189,7 +189,7 @@
 
                         <li class="message-item">
                             <a href="#">
-                                <img src="assets/img/messages-3.jpg" alt="" class="rounded-circle">
+                                <img src="{{ asset('assets/img/messages-3.jpg') }}" alt="" class="rounded-circle">
                                 <div>
                                     <h4>David Muldon</h4>
                                     <p>Velit asperiores et ducimus soluta repudiandae labore officia est ut...</p>
@@ -213,7 +213,7 @@
 
                     <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#"
                         data-bs-toggle="dropdown">
-                        <img src="assets/img/profile-img.jpg" alt="Profile" class="rounded-circle">
+                        <img src="{{ asset('assets/img/profile-img.jpg') }}" alt="Profile" class="rounded-circle">
                         <span class="d-none d-md-block dropdown-toggle ps-2">{{ Auth::user()->name }}</span>
                     </a><!-- End Profile Iamge Icon -->
 
@@ -294,41 +294,66 @@
             </li>
             @endif
 
-            @if(auth()->user()->hasPermissionToRoute('manage-role'))
+            @if(auth()->user()->hasPermissionToRoute('manage-role') || auth()->user()->hasPermissionToRoute('permission') || auth()->user()->hasPermissionToRoute('assign-permission-role') || auth()->user()->hasPermissionToRoute('assign-permission-route') || auth()->user()->hasPermissionToRoute('permission') || auth()->user()->hasPermissionToRoute('permission.create'))
             <li class="nav-item">
-                <a class="nav-link collapsed" href="{{ route('manage-role') }}">
-                    <i class="ri-user-3-line"></i>
-                    <span>Mangage Role</span>
+                <a class="nav-link {{ Request::segment(1) == 'manage-role' || Request::segment(1) == 'permission' || Request::segment(1) == 'assign-permission-role' || Request::segment(1) == 'assign-permission-route' ? '' : 'collapsed' }}"
+                    data-bs-target="#permission_role" data-bs-toggle="collapse" href="#">
+                    <i class="ri-list-settings-line"></i><span>Permission & Role</span><i class="bi bi-chevron-down ms-auto"></i>
                 </a>
+                <ul id="permission_role"
+                    class="nav-content collapse {{ Request::segment(1) == 'manage-role' || Request::segment(1) == 'permission' || Request::segment(1) == 'assign-permission-role' || Request::segment(1) == 'assign-permission-route' ? 'show' : '' }}"
+                    data-bs-parent="#sidebar-nav">
+
+                    @if(auth()->user()->hasPermissionToRoute('manage-role'))
+                    <li>
+                        <a href="{{ route('manage-role') }}"
+                            class="{{ Request::segment(1) == 'manage-role' ? 'active' : '' }}">
+                            <i class="bi bi-circle"></i><span>Role</span>
+                        </a>
+                    </li>
+
+                    @endif
+
+                    @if(auth()->user()->hasPermissionToRoute('permission.index'))
+                    <li>
+                        <a href="{{ route('permission.index') }}"
+                            class="{{ Request::segment(1) == 'permission.index' ? 'active' : '' }}">
+                            <i class="bi bi-circle"></i><span>Permission</span>
+                        </a>
+                    </li>
+                    @endif
+
+                    @if( auth()->user()->hasPermissionToRoute('permission.create'))
+                    <li>
+                        <a href="{{ route('permission.create') }}"
+                            class="{{ Request::segment(1) == 'permission.create' ? 'active' : '' }}">
+                            <i class="bi bi-circle"></i><span>Permission Create</span>
+                        </a>
+                    </li>
+                    @endif
+
+                    @if(auth()->user()->hasPermissionToRoute('assignPermissionRole'))
+                    <li>
+                        <a href="{{ route('assignPermissionRole') }}"
+                            class="{{ Request::segment(1) == 'assignPermissionRole' ? 'active' : '' }}">
+                            <i class="bi bi-circle"></i><span>Permission To Role</span>
+                        </a>
+                    </li>
+
+                    @endif
+
+                    @if(auth()->user()->hasPermissionToRoute('assignPermissionRoute'))
+                    <li>
+                        <a href="{{ route('assignPermissionRoute') }}"
+                            class="{{ Request::segment(1) == 'assignPermissionRoute' ? 'active' : '' }}">
+                            <i class="bi bi-circle"></i><span>Permission To Route</span>
+                        </a>
+                    </li>
+                    @endif
+                </ul>
             </li>
             @endif
 
-            @if(auth()->user()->hasPermissionToRoute('permission.index'))
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="{{ route('permission.index') }}">
-                    <i class="ri-user-3-line"></i>
-                    <span>Mangage Permission</span>
-                </a>
-            </li>
-            @endif
-
-            @if(auth()->user()->hasPermissionToRoute('assignPermissionRole'))
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="{{ route('assignPermissionRole') }}">
-                    <i class="ri-user-3-line"></i>
-                    <span>Assign Permission to Role</span>
-                </a>
-            </li>
-            @endif
-
-            @if(auth()->user()->hasPermissionToRoute('assignPermissionRoute'))
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="{{ route('assignPermissionRoute') }}">
-                    <i class="ri-user-3-line"></i>
-                    <span>Assign Permission to Route</span>
-                </a>
-            </li>
-            @endif
 
             @if(auth()->user()->hasPermissionToRoute('hotel'))
             <li class="nav-item">
@@ -377,17 +402,17 @@
             class="bi bi-arrow-up-short"></i></a>
 
     <!-- Vendor JS Files -->
-    <script src="assets/vendor/apexcharts/apexcharts.min.js"></script>
-    <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script src="assets/vendor/chart.js/chart.umd.js"></script>
-    <script src="assets/vendor/echarts/echarts.min.js"></script>
-    <script src="assets/vendor/quill/quill.js"></script>
-    <script src="assets/vendor/simple-datatables/simple-datatables.js"></script>
-    <script src="assets/vendor/tinymce/tinymce.min.js"></script>
-    <script src="assets/vendor/php-email-form/validate.js"></script>
+    <script src="{{ asset('assets/vendor/apexcharts/apexcharts.min.js') }}"></script>
+    <script src="{{ asset('assets/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ asset('assets/vendor/chart.js/chart.umd.js') }}"></script>
+    <script src="{{ asset('assets/vendor/echarts/echarts.min.js') }}"></script>
+    <script src="{{ asset('assets/vendor/quill/quill.js') }}"></script>
+    <script src="{{ asset('assets/vendor/simple-datatables/simple-datatables.js') }}"></script>
+    <script src="{{ asset('assets/vendor/tinymce/tinymce.min.js') }}"></script>
+    <script src="{{ asset('assets/vendor/php-email-form/validate.js') }}"></script>
 
     <!-- Template Main JS File -->
-    <script src="assets/js/main.js"></script>
+    <script src="{{ asset('assets/js/main.js') }}"></script>
 
 </body>
 

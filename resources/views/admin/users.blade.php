@@ -42,10 +42,9 @@
                                     <td>{{ $user->created_at }}</td>
                                     <td>
                                         <div class="btn-group" role="group" aria-label="Basic outlined example">
-                                            <button type="button" class="btn btn-outline-primary">View</button>
                                             <a class="btn btn-outline-primary" href="{{ route('edit', $user->id) }}">Edit</a>
                                             @if($user->is_deletable == 1)
-                                                <button type="button" class="btn btn-outline-primary">Delete</button>
+                                                <button type="button" class="btn btn-outline-danger">Delete</button>
                                             @endif
                                           </div>
                                     </td>

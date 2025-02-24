@@ -17,6 +17,7 @@ class Users extends Seeder
             'name' => 'Super Admin',
             'email' => 's.admin@example.com',
             'password' => bcrypt('123456'),
+            'is_deletable' => 0,
             'role_id' => 1,
         ]);
 
@@ -24,6 +25,7 @@ class Users extends Seeder
             'name' => 'Admin',
             'email' => 'admin@example.com',
             'password' => bcrypt('123456'),
+            'is_deletable' => 1,
             'role_id' => 2,
         ]);
 
@@ -32,6 +34,7 @@ class Users extends Seeder
             'name' => 'User',
             'email' => 'user@example.com',
             'password' => bcrypt('123456'),
+            'is_deletable' => 1,
             'role_id' => 3,
         ]);
     }

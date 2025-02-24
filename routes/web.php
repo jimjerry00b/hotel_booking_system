@@ -24,6 +24,11 @@ Route::middleware('guest')->group(function(){
 Route::middleware('auth', 'admin')->group(function(){
     Route::get('/logout', [AdminController::class, 'logout'])->name('logout');
     Route::get('/dashboard',[AdminController::class, 'dashboard'])->name('dashboard');
+});
+
+Route::middleware('auth', 'admin', 'havePermission')->group(function(){
+    // Route::get('/logout', [AdminController::class, 'logout'])->name('logout');
+    // Route::get('/dashboard',[AdminController::class, 'dashboard'])->name('dashboard');
     Route::get('/users',[AdminController::class, 'users'])->name('users');
     Route::get('user/add',[AdminController::class, 'add_new'])->name('add_new');
     Route::post('/add_new_post',[AdminController::class, 'add_new_post'])->name('add_new_post');

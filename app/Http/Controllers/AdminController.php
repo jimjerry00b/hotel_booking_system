@@ -24,7 +24,7 @@ class AdminController extends Controller
     }
 
     public function admin_login_post(AdminRequest $request){
-        
+
         $result = $this->service->login($request);
 
         if($result){
@@ -39,7 +39,7 @@ class AdminController extends Controller
     }
 
     public function users(){
-        $users = User::paginate(10);
+        $users = User::where('is_active', 1)->paginate(10);
         return view('admin.users', compact('users'));
     }
 
